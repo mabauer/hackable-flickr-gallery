@@ -32,6 +32,9 @@ if (!function_exists( 'fjgwpp_plugin_uninstall')) {
 		if (get_option('$fjgwpp_APIKey')) {
 			delete_option('$fjgwpp_APIKey');
 		}
+		if (get_option('$fjgwpp_layoutStyle')) {
+			delete_option('$fjgwpp_layoutStyle');
+		}
 		if (get_option('$fjgwpp_maxPhotosPP')) {
 			delete_option('$fjgwpp_maxPhotosPP');
 		}
@@ -87,6 +90,7 @@ function fjgwpp_admin_add_page() {
 }
 
 function fjgwpp_settings() {
+	global $fjgwpp_layoutStyle_default;
 	global $fjgwpp_imagesHeight_default;
 	global $fjgwpp_maxPhotosPP_default;
 	global $fjgwpp_lastRow_default;
@@ -106,6 +110,7 @@ function fjgwpp_settings() {
 	//Get Values
 	$fjgwpp_userID_saved = fjgwpp_getOption('userID', '');
 	$fjgwpp_APIKey_saved = fjgwpp_getOption('APIKey', '');
+	$fjgwpp_layoutStyle_saved = fjgwpp_getOption('layoutStyle', $fjgwpp_layoutStyle_default);	
 	$fjgwpp_imagesHeight_saved = (int)fjgwpp_getOption('imagesHeight', $fjgwpp_imagesHeight_default);
 	$fjgwpp_maxPhotosPP_saved = (int)fjgwpp_getOption('maxPhotosPP', $fjgwpp_maxPhotosPP_default);
 	$fjgwpp_lastRow_saved = fjgwpp_getOption('lastRow', $fjgwpp_lastRow_default);
@@ -151,6 +156,9 @@ function fjgwpp_settings() {
 				$error_msg .=	'<li>' . __('Invalid UserID', 'fjgwpp' ) . '</li>'; 		
 			}
 		}
+
+		if (isset($_POST["fjgwpp_layoutStyle"]))
+			$fjgwpp_layoutStyle_saved = htmlentities($_POST["fjgwpp_layoutStyle"], ENT_QUOTES);
 
 		$fjgwpp_imagesHeight_saved = (int)$_POST["fjgwpp_imagesHeight"];
 		if ($fjgwpp_imagesHeight_saved < 30) {
@@ -215,6 +223,7 @@ function fjgwpp_settings() {
 		if ($error == false) {
 			update_option('$fjgwpp_APIKey', $fjgwpp_APIKey_saved);
 			update_option('$fjgwpp_userID', $fjgwpp_userID_saved);
+			update_option('$fjgwpp_layoutStyle', $fjgwpp_layoutStyle_saved);
 			update_option('$fjgwpp_imagesHeight', $fjgwpp_imagesHeight_saved);
 			update_option('$fjgwpp_maxPhotosPP', $fjgwpp_maxPhotosPP_saved);
 			update_option('$fjgwpp_lastRow', $fjgwpp_lastRow_saved);
@@ -391,6 +400,20 @@ function fjgwpp_settings() {
 									</label>
 								</td>
 							</tr>
+							<tr>
+								<th scope="row"><?php _e('Layout', 'fjgwpp' ); ?></th>
+								<td>
+									<label for="fjgwpp_layoutStyle">
+										<select name="fjgwpp_layoutStyle" style="margin-right:5px">
+											<option value="justify" <?php if ($fjgwpp_layoutStyle_saved === 'justify') { echo('selected="selected"'); }; ?> >Justify</option>
+											<option value="isotope" <?php if ($fjgwpp_layoutStyle_saved === 'isotope') { echo('selected="selected"'); }; ?> >Isotope</option>
+										</select>
+										<p><?php echo( __('Justify will display a flickr style row-based layout, Isotope will display a box-oriented layout.', 'fjgwpp') ); ?></p>
+										<p><?php echo( __('You can use the <code>', 'fjgwpp') . 'layout_style' . __('</code> attribute to change this default value', 'fjgwpp') ); ?></p>
+									</label> 	
+								</td>
+							</tr>
+
 							<tr>
 								<th scope="row"><?php _e('Images Height (in px)', 'fjgwpp' ); ?></th>
 								<td>

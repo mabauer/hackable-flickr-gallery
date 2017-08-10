@@ -25,6 +25,7 @@ Gallery Wordpress Plugin. If not, see <http://www.gnu.org/licenses/>.
 */
 
 //Defaults
+$fjgwpp_layoutStyle_default = 'justify';
 $fjgwpp_imagesHeight_default = '120';
 $fjgwpp_maxPhotosPP_default = '20';
 $fjgwpp_lastRow_default = 'justify';
@@ -77,11 +78,15 @@ function fjgwpp_addCSSandJS() {
 
 	//Register styles
 	wp_register_style('justifiedGallery', plugins_url('css/justifiedGallery.min.css', __FILE__), NULL, 'v3.6');
+	wp_register_style('isotopeGallery', plugins_url('css/isotopeGallery.css', __FILE__), NULL, '1.0');
 	wp_register_style('flickrJustifiedGalleryWPPlugin', plugins_url('css/flickrJustifiedGalleryWPPlugin.css', __FILE__), NULL, 'v3.6');
 
 	//Register scripts
 	wp_register_script('justifiedGallery', plugins_url('js/jquery.justifiedGallery.min.js', __FILE__), 
 		array('jquery'), 'v3.6', true);
+	wp_register_script('objectFitPolyfill', plugins_url('js/objectFitPolyFill.min.js', __FILE__), NULL, 'v2.0.5', true );
+	wp_register_script('isotope', plugins_url('js/isotope.pkgd.min.js', __FILE__), array('jquery'), '20170303', true );
+	wp_register_script('isotopeGallery', plugins_url('js/isotopeGallery.js', __FILE__), array('jquery'), '1.0', true);
 	wp_register_script('flickrJustifiedGalleryWPPlugin', plugins_url('js/flickrJustifiedGalleryWPPlugin.js', __FILE__), 
 		array('jquery', 'justifiedGallery'), 'v3.4.0', true);
 
@@ -96,18 +101,25 @@ function fjgwpp_addCSSandJS() {
 			array('jquery'), 'v1.4.4', true);
 	}
 
+
 	//Enqueue styles
 	wp_enqueue_style('justifiedGallery');
+	wp_enqueue_style('isotopeGallery');
 	wp_enqueue_style('flickrJustifiedGalleryWPPlugin');
 	if (fjgwpp_getOption('provideColorbox')) wp_enqueue_style('colorbox');
 	if (fjgwpp_getOption('provideSwipebox')) wp_enqueue_style('swipebox');
 
+
 	//Enqueue scripts
 	wp_enqueue_script('jquery');
 	wp_enqueue_script('justifiedGallery');
+	wp_enqueue_script('objectFitPolyfill');
+	wp_enqueue_script('isotope');
+	wp_enqueue_script('isotopeGallery');
 	wp_enqueue_script('flickrJustifiedGalleryWPPlugin');
 	if (fjgwpp_getOption('provideColorbox')) wp_enqueue_script('colorbox');
 	if (fjgwpp_getOption('provideSwipebox')) wp_enqueue_script('swipebox');
+
 }
 
 function fjgwpp_formatError($errorMsg) {
@@ -128,6 +140,7 @@ function fjgwpp_getOption($name, $default = '') {
 }
 
 function fjgwpp_createGallery($action, $atts) {
+	global $fjgwpp_layoutStyle_default;
 	global $fjgwpp_imagesHeight_default;
 	global $fjgwpp_maxPhotosPP_default;
 	global $fjgwpp_lastRow_default;
@@ -155,6 +168,7 @@ function fjgwpp_createGallery($action, $atts) {
 		'id' => NULL,
 		'tags' => NULL,
 		'tags_mode' => 'any',
+		'layout_style' => fjgwpp_getOption('layoutStyle', $fjgwpp_layoutStyle_default), // Layout style
 		'images_height' => fjgwpp_getOption('imagesHeight', $fjgwpp_imagesHeight_default), // Flickr images size
 		'max_num_photos' => fjgwpp_getOption('maxPhotosPP', $fjgwpp_maxPhotosPP_default), // Max number of Photos	
 		'last_row' => fjgwpp_getOption('lastRow', $fjgwpp_lastRow_default),
@@ -312,8 +326,12 @@ function fjgwpp_createGallery($action, $atts) {
 		$imgSize = "small_320"; //small (longest side:320)
 	}
 
-	$ris .= '<!-- Flickr Justified Gallery Wordpress Plugin by Miro Mannino -->' . "\n" 
-		.	'<div id="' . $flickrGalID . '" class="justified-gallery" >';
+	$ris .= '<!-- Flickr Justified Gallery Wordpress Plugin by Miro Mannino, layout_style=' . $layout_style . ' -->' . "\n" ;
+	if ('justify' == $layout_style) {
+		$ris .=  '<div id="' . $flickrGalID . '" class="justified-gallery" >';
+	} else {
+		$ris .=  '<div id="' . $flickrGalID . '" class="isotope-gallery" >';
+	}
 
 	$r = 0;
 
@@ -329,12 +347,14 @@ function fjgwpp_createGallery($action, $atts) {
 		
 		$ris .= '<img alt="' . htmlspecialchars($photo['title'], ENT_QUOTES, 'UTF-8') 
 				 .	'" src="' . $f->buildPhotoURL($photo, $imgSize)
-				 .	'" data-safe-src="' . $f->buildPhotoURL($photo, $imgSize) . '" />';
+				 .	'" data-safe-src="' . $f->buildPhotoURL($photo, $imgSize)  
+				 .	'" data-object-fit="cover"' 
+				 .  '/>';
 
 		if ($captions) {
 			$ris .= '<div class="caption">'
-				 .  '<div class="photo-title' . ($show_descriptions ? ' photo-title-with-desc' : '') . '">'
-				 .  htmlspecialchars($photo['title'], ENT_QUOTES, 'UTF-8') . '</div>';
+				 .  '<h2 class="photo-title' . ($show_descriptions ? ' photo-title-with-desc' : '') . '">'
+				 .  htmlspecialchars($photo['title'], ENT_QUOTES, 'UTF-8') . '</h2>';
 			if ($show_descriptions && isset($photo['description']) && isset($photo['description']['_content'])) {
 				$ris .= '<div class="photo-desc">' . fjgwpp_filterDescription($photo['description']['_content']) . '</div>';
 			}	
@@ -382,20 +402,26 @@ function fjgwpp_createGallery($action, $atts) {
 		$ris .=		');
 				})';
 	}
-
-	$ris .= '.justifiedGallery({'
-			 .	'\'lastRow\': \'' . $last_row . '\', '
-			 .	'\'rowHeight\':' . $images_height . ', '
-			 .	'\'fixedHeight\':' . ($fixed_height ? 'true' : 'false') . ', '		 
-			 .	'\'captions\':' . ($captions ? 'true' : 'false') . ', '
-			 .	'\'randomize\':' . ($randomize ? 'true' : 'false') . ', '
-			 .	'\'margins\':' . $margins . ', '
-			 .  '\'sizeRangeSuffixes\': { 
-			 			\'lt100\':\'_t\', \'lt240\':\'_m\', \'lt320\':\'_n\',
-						\'lt500\':\'\', \'lt640\':\'_z\','
-			 .  		(($use_large_thumbnails) ? '\'lt1024\':\'_b\'' : '\'lt1024\':\'_z\'')
-			 .  '}});';
-	
+	if ('justify' == $layout_style) {
+		$ris .= '.justifiedGallery({'
+					.	'\'lastRow\': \'' . $last_row . '\', '
+					.	'\'rowHeight\':' . $images_height . ', '
+					.	'\'fixedHeight\':' . ($fixed_height ? 'true' : 'false') . ', '		 
+					.	'\'captions\':' . ($captions ? 'true' : 'false') . ', '
+					.	'\'randomize\':' . ($randomize ? 'true' : 'false') . ', '
+					.	'\'margins\':' . $margins . ', '
+					.  '\'sizeRangeSuffixes\': { 
+							\'lt100\':\'_t\', \'lt240\':\'_m\', \'lt320\':\'_n\',
+							\'lt500\':\'\', \'lt640\':\'_z\','
+					.  		(($use_large_thumbnails) ? '\'lt1024\':\'_b\'' : '\'lt1024\':\'_z\'')
+					.  '}});';
+	}
+	else {
+		$ris .= '.isotopeGallery({'
+					. 	'\'imageSize\':' . $images_height . ', '
+					. 	'\'margins\':' . $margins
+					. '});';
+	}
 	if ($block_contextmenu) {
 		$ris .= 'fjgwppDisableContextMenu(jQuery("#' . $flickrGalID . '").find("> a"));';
 	}
