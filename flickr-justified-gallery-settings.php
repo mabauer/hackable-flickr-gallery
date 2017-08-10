@@ -108,7 +108,7 @@ function fjgwpp_settings() {
 	$fjgwpp_APIKey_saved = fjgwpp_getOption('APIKey', '');
 	$fjgwpp_imagesHeight_saved = (int)fjgwpp_getOption('imagesHeight', $fjgwpp_imagesHeight_default);
 	$fjgwpp_maxPhotosPP_saved = (int)fjgwpp_getOption('maxPhotosPP', $fjgwpp_maxPhotosPP_default);
-	$fjgwpp_lastRow_saved = (int)fjgwpp_getOption('lastRow', $fjgwpp_lastRow_default);
+	$fjgwpp_lastRow_saved = fjgwpp_getOption('lastRow', $fjgwpp_lastRow_default);
 	$fjgwpp_fixedHeight_saved = (int)fjgwpp_getOption('fixedHeight', $fjgwpp_fixedHeight_default);
 	$fjgwpp_pagination_saved = fjgwpp_getOption('pagination', $fjgwpp_pagination_default);
 	$fjgwpp_lightbox_saved = fjgwpp_getOption('lightbox', $fjgwpp_lightbox_default);
