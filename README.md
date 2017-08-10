@@ -1,17 +1,16 @@
-=== Hackable Flickr Gallery ===
-Contributors: Markus Bauer, miro.mannino
-Tags: photography, gallery, photo, flickr, photostream, set, justified, grid
-Stable tag: trunk
-License: GPLv3
-License URI: http://www.gnu.org/licenses/gpl.txt
+# Hackable Flickr Gallery #
+**Contributors:** Markus Bauer, miro.mannino
+**Tags:** photography, gallery, photo, flickr, photostream, set, justified, grid
+**License:** GPLv3
+**License URI:** http://www.gnu.org/licenses/gpl.txt
 
-Just your beautiful Flickr photos. 
+*Just your beautiful Flickr photos.* 
 
-== Description ==
+## Description ##
 
 Plugin that allows you to show your Flickr **photostream**, **photosets**, **galleries**, **group pools**, or **tags** in your blog, with very elegant and awesome layouts.
 
- = Features: = 
+## Features: ##
 
  * A gallery with the same layout of Flickr or an Isotope style layout, configurable as you want.
  * Fast and light. Also uses a cache to load galleries instantly.
@@ -24,4 +23,3 @@ Plugin that allows you to show your Flickr **photostream**, **photosets**, **gal
  * Customisable style, you need just to change a CSS.
  * Pagination with SEO friendly URLs. Decide if you want to show the newer photos or not.
  * Available in English and Italian
-
