@@ -1,25 +1,24 @@
 <?php
 /* 
-Flickr Justified Gallery
-Version: 3.4.2
-Author: Miro Mannino
-Author URI: http://miromannino.it
+Hackable Flickr Gallery
+Version: 1.0.0
+Author: Markus Bauer
+Author URI: https://mkbauer.de
 
-Copyright 2012 Miro Mannino (miro.mannino@gmail.com)
-thanks to Dan Coulter for phpFlickr Class (dan@dancoulter.com)
+Copyright 2017, 2012 by Miro Mannino (miro.mannino@gmail.com) and Markus Bauer (mkbauer@web.de)
+Most of this plugin is written by Miro Mannino (miro.mannino@gmail.com)
+Thanks to Dan Coulter for phpFlickr Class (dan@dancoulter.com)
 
-This file is part of Flickr Justified Gallery Wordpress Plugin.
-
-Flickr Justified Gallery Wordpress Plugin is free software: you can redistribute it and/or modify
+Hackable Flickr Gallery Wordpress Plugin is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by the Free Software 
 Foundation, either version 3 of the License, or (at your option) any later version.
 
-Flickr Justified Gallery Wordpress Plugin is distributed in the hope that it will be useful,
+Hackable Flickr Gallery Wordpress Plugin is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
 FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-You should have received a copy of the GNU General Public License along with Flickr Justified 
-Gallery Wordpress Plugin. If not, see <http://www.gnu.org/licenses/>.
+You should have received a copy of the GNU General Public License along with Hackable Flickr Gallery Wordpress. 
+If not, see <http://www.gnu.org/licenses/>.
 */
 
 //uninstall plugin, remove the options for privacy
@@ -257,12 +256,12 @@ function fjgwpp_settings() {
 
 	<style type="text/css">
 		#poststuff h3 { cursor: auto; }
-		.justified-gallery-settings .card { max-width: 1200px; }
+		.hackable-gallery-settings .card { max-width: 1024px; }
 	</style>
 
 			 
-	<div class="wrap justified-gallery-settings">
-		<h1>Flickr Justified Gallery</h1>
+	<div class="wrap hackable-gallery-settings">
+		<h1>Hackable Flickr Gallery</h1>
 
 		<div>
 
@@ -623,7 +622,10 @@ function fjgwpp_settings() {
 				<h2><?php _e('Help the project', 'fjgwpp' ); ?></h2>
 				<div class="inside">
 					<p>
-						<?php _e('Help the project to grow. Donate something, or simply <a href="http://wordpress.org/plugins/flickr-justified-gallery" target="_blank">rate the plugin on Wordpress</a>.', 'fjgwpp' ); ?>
+						<?php 
+							_e('<p>This plugin is derived from the project <a href="http://wordpress.org/plugins/flickr-justified-gallery" target="_blank">Flickr Justified Gallery Plugin</a> by Miro Mannino.</p>', 'fjgwpp' );
+							_e('<p>Donate something to him, or simply <a href="http://wordpress.org/plugins/flickr-justified-gallery" target="_blank">rate his plugin on Wordpress</a>.', 'fjgwpp' ); 
+							?>
 						<form action="https://www.paypal.com/<cgi-bin/webscr" method="post" target="_top">
 							<input type="hidden" name="cmd" value="_s-xclick">
 							<input type="hidden" name="encrypted" value="-----BEGIN PKCS7-----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-----END PKCS7-----

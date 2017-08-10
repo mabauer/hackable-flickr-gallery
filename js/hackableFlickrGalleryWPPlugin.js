@@ -1,7 +1,7 @@
 /* 
-Flickr Justified Gallery Wordpress Plugin
-Author: Miro Mannino
-Author URI: http://miromannino.com
+Hackable Flickr Gallery Wordpress Plugin
+Author: Markus Bauer
+Author URI: https://mkbauer.de
 */
 
 function fjgwppDisableContextMenu(imgs) {

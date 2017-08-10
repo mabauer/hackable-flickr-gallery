@@ -1,27 +1,31 @@
 <?php
 /* 
-Plugin Name: Flickr Justified Gallery
-Plugin URI: http://miromannino.it/projects/flickr-justified-gallery/
-Description: Shows the Flickr photostream, sets and galleries, with an high quality justified gallery.
-Version: 3.4.2
-Author: Miro Mannino
-Author URI: http://miromannino.com/about-me/
+Plugin Name: Hackable Flickr Gallery
+Plugin URI: https://github.com/mabauer/hackable-flickr-gallery
+Description: Shows the Flickr photostream, sets and galleries, using different layouts.
+Version: 1.0.0
+Author: Markus Bauer
+Author URI: https://mkbauer.de/
 
-Copyright 2012 Miro Mannino (miro.mannino@gmail.com)
-thanks to Dan Coulter for phpFlickr Class (dan@dancoulter.com)
 
-This file is part of Flickr Justified Gallery Wordpress Plugin.
+This file is part of Hackable Flickr Gallery Plugin.
+Hackable Flickr Gallery Plugin is heavily based on Miro Mannino's Flickr-Justified-Gallery Plugin,
+see http://miromannino.it. 
 
-Flickr Justified Gallery Wordpress Plugin is free software: you can redistribute it and/or modify
+Copyright 2017, 2012 by Miro Mannino (miro.mannino@gmail.com) and Markus Bauer (mkbauer@web.de)
+Most of this plugin is written by Miro Mannino (miro.mannino@gmail.com)
+Thanks to Dan Coulter for phpFlickr Class (dan@dancoulter.com)
+
+Hackable Flickr Gallery Wordpress Plugin is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by the Free Software 
 Foundation, either version 3 of the License, or (at your option) any later version.
 
-Flickr Justified Gallery Wordpress Plugin is distributed in the hope that it will be useful,
+Hackable Flickr Gallery Wordpress Plugin is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
 FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-You should have received a copy of the GNU General Public License along with Flickr Justified 
-Gallery Wordpress Plugin. If not, see <http://www.gnu.org/licenses/>.
+You should have received a copy of the GNU General Public License along with Hackable Flickr Gallery Wordpress. 
+If not, see <http://www.gnu.org/licenses/>.
 */
 
 //Defaults
@@ -79,7 +83,7 @@ function fjgwpp_addCSSandJS() {
 	//Register styles
 	wp_register_style('justifiedGallery', plugins_url('css/justifiedGallery.min.css', __FILE__), NULL, 'v3.6');
 	wp_register_style('isotopeGallery', plugins_url('css/isotopeGallery.css', __FILE__), NULL, '1.0');
-	wp_register_style('flickrJustifiedGalleryWPPlugin', plugins_url('css/flickrJustifiedGalleryWPPlugin.css', __FILE__), NULL, 'v3.6');
+	wp_register_style('hackableFlickrGalleryWPPlugin', plugins_url('css/hackableFlickrGalleryWPPlugin.css', __FILE__), NULL, 'v1.0.0');
 
 	//Register scripts
 	wp_register_script('justifiedGallery', plugins_url('js/jquery.justifiedGallery.min.js', __FILE__), 
@@ -87,8 +91,8 @@ function fjgwpp_addCSSandJS() {
 	wp_register_script('objectFitPolyfill', plugins_url('js/objectFitPolyFill.min.js', __FILE__), NULL, 'v2.0.5', true );
 	wp_register_script('isotope', plugins_url('js/isotope.pkgd.min.js', __FILE__), array('jquery'), '20170303', true );
 	wp_register_script('isotopeGallery', plugins_url('js/isotopeGallery.js', __FILE__), array('jquery'), '1.0', true);
-	wp_register_script('flickrJustifiedGalleryWPPlugin', plugins_url('js/flickrJustifiedGalleryWPPlugin.js', __FILE__), 
-		array('jquery', 'justifiedGallery'), 'v3.4.0', true);
+	wp_register_script('hackableFlickrGalleryWPPlugin', plugins_url('js/hackableFlickrGalleryWPPlugin.js', __FILE__), 
+		array('jquery', 'justifiedGallery'), 'v1.0.0.', true);
 
 	if (fjgwpp_getOption('provideColorbox')) {
 		wp_register_style('colorbox', plugins_url('lightboxes/colorbox/colorbox.css', __FILE__));
@@ -105,7 +109,7 @@ function fjgwpp_addCSSandJS() {
 	//Enqueue styles
 	wp_enqueue_style('justifiedGallery');
 	wp_enqueue_style('isotopeGallery');
-	wp_enqueue_style('flickrJustifiedGalleryWPPlugin');
+	wp_enqueue_style('hackableFlickrGalleryWPPlugin');
 	if (fjgwpp_getOption('provideColorbox')) wp_enqueue_style('colorbox');
 	if (fjgwpp_getOption('provideSwipebox')) wp_enqueue_style('swipebox');
 
@@ -116,7 +120,7 @@ function fjgwpp_addCSSandJS() {
 	wp_enqueue_script('objectFitPolyfill');
 	wp_enqueue_script('isotope');
 	wp_enqueue_script('isotopeGallery');
-	wp_enqueue_script('flickrJustifiedGalleryWPPlugin');
+	wp_enqueue_script('hackableFlickrGalleryWPPlugin');
 	if (fjgwpp_getOption('provideColorbox')) wp_enqueue_script('colorbox');
 	if (fjgwpp_getOption('provideSwipebox')) wp_enqueue_script('swipebox');
 
@@ -586,6 +590,6 @@ add_shortcode('flickr_group', 'fjgwpp_flickr_group');
 
 
 //Options
-include("flickr-justified-gallery-settings.php");
+include("hackable-flickr-gallery-settings.php");
 
 ?>

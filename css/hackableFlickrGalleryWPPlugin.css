@@ -1,0 +1,9 @@
+/* 
+Hackable Flickr Gallery Wordpress Plugin
+Author: Markus Bauer
+Author URI: https://mkbauer.de
+*/
+
+.justified-gallery .caption .photo-title-with-desc {
+	font-weight: bold;
+}
