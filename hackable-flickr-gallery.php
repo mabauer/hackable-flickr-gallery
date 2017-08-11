@@ -88,7 +88,7 @@ function fjgwpp_addCSSandJS() {
 	//Register scripts
 	wp_register_script('justifiedGallery', plugins_url('js/jquery.justifiedGallery.min.js', __FILE__), 
 		array('jquery'), 'v3.6', true);
-	wp_register_script('objectFitPolyfill', plugins_url('js/objectFitPolyFill.min.js', __FILE__), NULL, 'v2.0.5', true );
+	wp_register_script('objectFitPolyfill', plugins_url('js/objectFitPolyfill.min.js', __FILE__), NULL, 'v2.0.5', true );
 	wp_register_script('isotope', plugins_url('js/isotope.pkgd.min.js', __FILE__), array('jquery'), '20170303', true );
 	wp_register_script('isotopeGallery', plugins_url('js/isotopeGallery.js', __FILE__), array('jquery'), '1.0', true);
 	wp_register_script('hackableFlickrGalleryWPPlugin', plugins_url('js/hackableFlickrGalleryWPPlugin.js', __FILE__), 
